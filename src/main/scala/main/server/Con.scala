@@ -7,6 +7,6 @@ import java.io._
 object Con {
   private val ip: String = "127.0.0.1"
   private val port: Int = 43225
-  def getSock: Socket = new Socket(getIP,getPort)
+  def getSock: Socket = new Socket(ip,port)
   def closeSock(x: Socket): Unit = x.close
 }
