@@ -1,3 +1,9 @@
 // starts the main loop
 
-object Main
+import server._
+
+object Main {
+  def main(args: Array[String]: Unit = {
+    println("Starting server")
+  }
+}
