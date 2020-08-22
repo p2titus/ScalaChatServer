@@ -27,9 +27,9 @@ private class Recv[A] extends Thread {
 
   override def run(): Unit = {
     fin = false
-    val sock: Socket = Con.getSock
+    val (ss,sock): (ServerSocket,Socket) = Con.getSock
     recv(sock)
-    Con.closeSock(sock)
+    Con.closeSock(ss,sock)
   }
 
   // modifies curQ

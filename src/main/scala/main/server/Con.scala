@@ -5,8 +5,11 @@ import java.io._
 
 // handles returning the socket with the connection to 
 object Con {
-  private val ip: String = "127.0.0.1"
   private val port: Int = 43225
-  def getSock: Socket = new Socket(ip,port)
-  def closeSock(x: Socket): Unit = x.close
+  def getSock: (ServerSocket,Socket) = {
+    val ss: ServerSocket = new ServerSocket(port)
+    val sock: Socket = ss.accept()
+    (ss,sock)
+  }
+  def closeSock(x: ServerSocket, y: Socket): Unit = { y.close; x.close }
 }
