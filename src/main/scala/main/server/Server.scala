@@ -27,24 +27,25 @@ private class Recv[A] extends Thread {
 
   override def run(): Unit = {
     fin = false
-    val (ss,sock): (ServerSocket,Socket) = Con.getSock
-    println("here1")
-    recv(sock)
-    Con.closeSock(ss,sock)
+    val con: Con.type = Con
+    val ss: ServerSocket = con.getServerSock
+    
+    while(!fin) {
+      val sock: Socket = con.getSock(ss)
+      recv(sock)
+      Con.close(sock)
+    }
+
+    Con.close(ss)
   }
 
   // modifies curQ
   private def recv(skt: Socket): Unit = {
     val inStream: InputStream = skt.getInputStream
     val in: ObjectInputStream = new ObjectInputStream(inStream)
-    println("here")
-    while(!fin) { // waits in this tight loop whilst not being used
-      //if(0 < in.available) {
-        println("Just before")
-        val x: A = in.readObject.asInstanceOf[A] // TODO - does this block until it's read?
-        println("GOT SOMETHING!")
-        this.curQ = this.curQ.enqueue(x)
-      //}
-    }
+    println("Just before")
+    val x: A = in.readObject.asInstanceOf[A] // TODO - does this block until it's read?
+    println("GOT SOMETHING!")
+    this.curQ = this.curQ.enqueue(x)
   }
 }
